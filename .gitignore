@@ -1,0 +1,18 @@
+# Dependency Directories
+backend/vendor/
+frontend/node_modules/
+
+# Environment and Sensitive Files
+backend/.env
+frontend/.env
+frontend/.env.local
+*.key
+
+# Build and Cache
+backend/.phpunit.result.cache
+frontend/dist/
+frontend/coverage/
+
+# OS Specific Files
+.DS_Store
+Thumbs.db
