@@ -46,4 +46,6 @@ jobs:
         run: |
           cd frontend
           npm install
-          npm test run
+          # We call your specific script 'test:unit' 
+          # and add '-- --run' to prevent it from hanging in watch mode
+          npm run test:unit -- --run
