@@ -7,8 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  backend-tests:
-    name: Backend Tests
+  laravel-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,25 +15,24 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3' 
           extensions: mbstring, dom, curl, libxml, sqlite3
+          coverage: none
 
       - name: Install Dependencies
-        working-directory: ./backend
-        run: composer install --prefer-dist --no-progress
-
-      - name: Prepare Environment
-        working-directory: ./backend
         run: |
+          cd backend
+          composer install --prefer-dist --no-progress --ignore-platform-reqs
+
+      - name: Run Backend Tests
+        run: |
+          cd backend
           cp .env.example .env
           php artisan key:generate
           touch database/database.sqlite
+          php artisan test
 
-      - name: Run Tests
-        working-directory: ./backend
-        run: php artisan test
-
-  frontend-tests:
+  vue-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,10 +42,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Dependencies
-        working-directory: ./frontend
-        run: npm install
-
-      - name: Run Tests
-        working-directory: ./frontend
-        run: npm test run
+      - name: Install & Test Frontend
+        run: |
+          cd frontend
+          npm install
+          npm test run
